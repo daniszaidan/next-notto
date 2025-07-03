@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/24/outline';
 import ChecklistItem from '@/components/ChecklistItem';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { ChecklistItem as ChecklistItemType } from '@/utils/types';
 import { checklistItemApi } from '@/utils/api';
 
@@ -98,80 +99,84 @@ export default function ChecklistDetailPage() {
   const totalItems = items.length;
 
   return (
-    <section className="p-100 md:px-50 sm:px-30">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ArrowLeftIcon className="w-6 h-6" />
-          </button>
-          <div>
-            <h1 className="text-2xl font-bold">Detail Checklist</h1>
-            <p className="text-gray-600">
-              {completedItems} dari {totalItems} item selesai
-            </p>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        {totalItems > 0 && (
-          <div className="mb-6">
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-purple-500 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(completedItems / totalItems) * 100}%` }}
-              ></div>
-            </div>
-          </div>
-        )}
-
-        {/* Form untuk menambah item baru */}
-        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
-              placeholder="Nama item baru..."
-              className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              onKeyPress={(e) => e.key === 'Enter' && handleCreateItem()}
-            />
+    <ProtectedRoute>
+      <section className="p-100 md:px-50 sm:px-30">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-8">
             <button
-              onClick={handleCreateItem}
-              disabled={isCreating || !newItemName.trim()}
-              className="px-4 py-3 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              onClick={() => router.back()}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              <PlusIcon className="w-5 h-5" />
-              {isCreating ? 'Menambah...' : 'Tambah'}
+              <ArrowLeftIcon className="w-6 h-6" />
             </button>
-          </div>
-        </div>
-
-        {/* Daftar item */}
-        <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          {items.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
-              <p>Belum ada item dalam checklist ini. Tambahkan item pertama!</p>
-            </div>
-          ) : (
             <div>
-              {items.map((item) => (
-                <ChecklistItem
-                  key={item.id}
-                  item={item}
-                  checklistId={checklistId}
-                  onDelete={handleDeleteItem}
-                  onStatusChange={handleStatusChange}
-                  onRename={handleRename}
-                />
-              ))}
+              <h1 className="text-2xl font-bold">Detail Checklist</h1>
+              <p className="text-gray-600">
+                {completedItems} dari {totalItems} item selesai
+              </p>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          {totalItems > 0 && (
+            <div className="mb-6">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-purple-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(completedItems / totalItems) * 100}%` }}
+                ></div>
+              </div>
             </div>
           )}
+
+          {/* Form untuk menambah item baru */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+            <div className="flex gap-3">
+              <input
+                type="text"
+                value={newItemName}
+                onChange={(e) => setNewItemName(e.target.value)}
+                placeholder="Nama item baru..."
+                className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                onKeyDown={(e) => e.key === 'Enter' && handleCreateItem()}
+              />
+              <button
+                onClick={handleCreateItem}
+                disabled={isCreating || !newItemName.trim()}
+                className="px-4 py-3 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <PlusIcon className="w-5 h-5" />
+                {isCreating ? 'Menambah...' : 'Tambah'}
+              </button>
+            </div>
+          </div>
+
+          {/* Daftar item */}
+          <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            {items.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <p>
+                  Belum ada item dalam checklist ini. Tambahkan item pertama!
+                </p>
+              </div>
+            ) : (
+              <div>
+                {items.map((item) => (
+                  <ChecklistItem
+                    key={item.id}
+                    item={item}
+                    checklistId={checklistId}
+                    onDelete={handleDeleteItem}
+                    onStatusChange={handleStatusChange}
+                    onRename={handleRename}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ProtectedRoute>
   );
 }

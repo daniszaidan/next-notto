@@ -2,6 +2,8 @@
 
 import { TrashIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Checklist } from '@/utils/types';
+import { getRandomPastelColor } from '@/utils/commons';
+import { useMemo } from 'react';
 
 interface ChecklistCardProps {
   checklist: Checklist;
@@ -14,6 +16,10 @@ export default function ChecklistCard({
   onDelete,
   onSelect,
 }: ChecklistCardProps) {
+  const backgroundColor = useMemo(() => {
+    return getRandomPastelColor();
+  }, []);
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     onDelete(checklist.id);
@@ -21,15 +27,14 @@ export default function ChecklistCard({
 
   return (
     <div
-      className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+      style={{ backgroundColor }}
       onClick={() => onSelect(checklist.id)}
     >
       <div className="flex items-center justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">
-            {checklist.name}
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">
+          <h3 className="text-lg font-bold text-white">{checklist.name}</h3>
+          <p className="text-sm text-white/75 mt-1">
             Status:{' '}
             {checklist.checklistCompletionStatus ? 'Selesai' : 'Belum Selesai'}
           </p>
