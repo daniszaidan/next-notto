@@ -1,15 +1,14 @@
-import { ArrowRightIcon, UserIcon } from '@heroicons/react/24/solid';
+import { CheckIcon } from '@heroicons/react/24/solid';
 import ButtonTitle from './ButtonTitle';
 
 export default function Navigation() {
   return (
     <nav className="flex justify-between items-center gap-25">
       <div className="flex flex-col gap-5">
-        <h1 className="text-[25px] font-bold">Notto</h1>
-        <p className="text-[20px] text-foreground/70">A note-taking app</p>
+        <h1 className="text-[25px] font-bold">To-Do List</h1>
+        <p className="text-[20px] text-foreground/70">Kelola tugas dengan mudah</p>
       </div>
-      <ButtonTitle title="Login" icon={<ArrowRightIcon />} />
-      {/* <ButtonTitle title="Danis" icon={<UserIcon />} /> */}
+      <ButtonTitle title="Checklist" icon={<CheckIcon />} href="/" />
     </nav>
   );
 }
