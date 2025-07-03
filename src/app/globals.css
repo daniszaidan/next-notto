@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-manrope);
+
+  --breakpoint-*: initial;
+
+  --spacing-5: 5px;
+  --spacing-10: 10px;
+  --spacing-15: 15px;
+  --spacing-20: 20px;
+  --spacing-25: 25px;
+  --spacing-30: 30px;
+  --spacing-50: 50px;
+  --spacing-75: 75px;
+  --spacing-100: 100px;
+  --spacing-200: 200px;
+
+  --radius-10: 10px;
+  --radius-20: 20px;
+  --radius-30: 30px;
+}
+
+@custom-variant 2xl (@media (max-width: 1535px));
+@custom-variant xl (@media (max-width: 1279px));
+@custom-variant lg (@media (max-width: 1023px));
+@custom-variant md (@media (max-width: 899px));
+@custom-variant sm (@media (max-width: 639px));
+@custom-variant hover (&:hover);
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-manrope), sans-serif;
+}
