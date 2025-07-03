@@ -1,7 +1,14 @@
 import axios from 'axios';
-import { ApiResponse, Checklist, ChecklistItem, LoginRequest, RegisterRequest, AuthResponse } from './types';
+import {
+  ApiResponse,
+  Checklist,
+  ChecklistItem,
+  LoginRequest,
+  RegisterRequest,
+  AuthResponse,
+} from './types';
 
-const API_BASE_URL = 'http://94.74.86.174:8080/api';
+const API_BASE_URL = '/api-proxy';
 
 // Get token from localStorage
 const getToken = (): string | null => {
@@ -53,21 +60,27 @@ api.interceptors.response.use(
 export const authApi = {
   // Register new user
   register: async (userData: RegisterRequest): Promise<AuthResponse> => {
-    const response = await api.post<ApiResponse<AuthResponse>>('/register', userData);
+    const response = await api.post<ApiResponse<AuthResponse>>(
+      '/register',
+      userData
+    );
     return response.data.data;
   },
 
   // Login user
   login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-    const response = await api.post<ApiResponse<AuthResponse>>('/login', credentials);
+    const response = await api.post<ApiResponse<AuthResponse>>(
+      '/login',
+      credentials
+    );
     const authData = response.data.data;
-    
+
     // Save token to localStorage
     if (authData.token) {
       localStorage.setItem('auth_token', authData.token);
       localStorage.setItem('username', credentials.username);
     }
-    
+
     return authData;
   },
 
